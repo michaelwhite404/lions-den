@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import SelectItem from "./SelectItem";
 
 interface MultiSelectListProps {
   data: any[];
   onCheckboxPress?: (selectedItems: MultiSelectListProps["data"]) => void;
+  renderItem?: (item: any) => ReactNode;
 }
 
 interface ListItem {
@@ -12,9 +13,12 @@ interface ListItem {
   selected: boolean;
 }
 
-export default function MultiSelectList({ data, onCheckboxPress }: MultiSelectListProps) {
+export default function MultiSelectList({
+  data,
+  onCheckboxPress,
+  renderItem,
+}: MultiSelectListProps) {
   const [list, setList] = useState<ListItem[]>([]);
-  const [selected, setSelected] = useState<MultiSelectListProps["data"]>([]);
 
   useEffect(() => {
     setList(data.map((obj) => ({ ...obj, selected: false })));
@@ -39,7 +43,7 @@ export default function MultiSelectList({ data, onCheckboxPress }: MultiSelectLi
       data={list}
       renderItem={(props) => (
         <SelectItem onPress={(checked) => handleCheckboxPress(checked, props.index)}>
-          <Text>{props.item.fullName}</Text>
+          <Text>{renderItem?.(props.item)}</Text>
         </SelectItem>
       )}
     />

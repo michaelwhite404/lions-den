@@ -20,7 +20,13 @@ export default function SelectStudentsScreen() {
   return (
     <View style={styles.container}>
       {students.length > 0 && (
-        <MultiSelectList data={students} onCheckboxPress={handleAnyCheckboxPress} />
+        <MultiSelectList
+          data={students}
+          onCheckboxPress={handleAnyCheckboxPress}
+          renderItem={({ fullName }) => (
+            <Text style={{ fontSize: 15, fontWeight: "500", color: "black" }}>{fullName}</Text>
+          )}
+        />
       )}
     </View>
   );
