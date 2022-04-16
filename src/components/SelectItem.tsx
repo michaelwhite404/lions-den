@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 interface SelectItemProps {
@@ -10,9 +10,9 @@ interface SelectItemProps {
 export default function SelectItem({ children, onPress }: SelectItemProps) {
   const [selected, setSelected] = useState(false);
 
-  const handlePress = (checked: boolean) => {
-    setSelected(checked);
-    if (onPress) onPress(checked);
+  const handlePress = () => {
+    setSelected(!selected);
+    if (onPress) onPress(!selected);
   };
 
   return (
@@ -25,8 +25,11 @@ export default function SelectItem({ children, onPress }: SelectItemProps) {
         }}
         isChecked={selected}
         onPress={handlePress}
+        disableBuiltInState
       />
-      {children}
+      <TouchableOpacity style={styles.text} onPress={handlePress}>
+        {children}
+      </TouchableOpacity>
     </View>
   );
 }
@@ -34,8 +37,12 @@ export default function SelectItem({ children, onPress }: SelectItemProps) {
 const styles = StyleSheet.create({
   container: {
     paddingLeft: 20,
-    paddingVertical: 10,
+    paddingVertical: 5,
     flexDirection: "row",
     alignItems: "center",
+  },
+  text: {
+    paddingVertical: 10,
+    width: "70%",
   },
 });

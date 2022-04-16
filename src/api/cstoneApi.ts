@@ -4,7 +4,7 @@ import { StudentsResponse } from "../../types/apiResponse";
 import StudentModel from "../../types/models/studentModel";
 
 const cstoneApi = axios.create({
-  baseURL: "https://f41d-108-31-65-13.ngrok.io/api/v2",
+  baseURL: "https://fc92-108-31-65-13.ngrok.io/api/v2",
 });
 
 const headers = (token: string | null): AxiosRequestConfig => ({
