@@ -38,7 +38,13 @@ export default function App() {
             ),
           }}
         />
-        <MainStack.Screen name="SelectStudents" component={SelectStudentsScreen} />
+        <MainStack.Screen
+          name="SelectStudents"
+          component={SelectStudentsScreen}
+          options={{
+            headerTitle: "Select Students",
+          }}
+        />
       </MainStack.Navigator>
     );
   };

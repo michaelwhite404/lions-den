@@ -1,6 +1,7 @@
 import React from "react";
 import { Image, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-rn";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function HomeScreen({ navigation }: any) {
   return (
