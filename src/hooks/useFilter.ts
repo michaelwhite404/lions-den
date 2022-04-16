@@ -6,10 +6,15 @@ export default function useFilter<T>(data: T[], key: keyof T) {
 
   useEffect(() => getData(), [filter]);
 
-  const getData = () =>
+  const getData = () => {
+    if (filter === "") {
+      setFilteredData([]);
+      return;
+    }
     setFilteredData(
       data.filter((item) => String(item[key]).toLowerCase().includes(filter.toLowerCase()))
     );
+  };
 
   return { data: filteredData, filter, setFilter };
 }
