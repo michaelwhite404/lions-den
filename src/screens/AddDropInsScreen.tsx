@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FlatList, StyleSheet, Text, View, Dimensions, TouchableOpacity } from "react-native";
 import SearchBar from "react-native-dynamic-search-bar";
+import tw from "tailwind-rn";
 import StudentModel from "../../types/models/studentModel";
 import { getAllStudents } from "../api/cstoneApi";
 import CheckItem from "../components/CheckItem";
@@ -10,10 +11,22 @@ import useFilter from "../hooks/useFilter";
 export default function AddDropInsScreen({ navigation, route }: any) {
   const [students, setStudents] = useState<StudentModel[]>([]);
   const { data, filter, setFilter } = useFilter(students, "fullName");
+  const [selectedStudents, setSelectedStudents] = useState<StudentModel[]>([]);
 
   useEffect(() => {
     getAllStudents({ status: "Active", aftercare: false }).then(setStudents).catch(console.error);
   }, []);
+
+  const addStudent = (studentToAdd: StudentModel) => {
+    setSelectedStudents([...selectedStudents, studentToAdd]);
+    setStudents(students.filter((student) => student._id !== studentToAdd._id));
+    setFilter("");
+  };
+
+  const removeStudent = (removedStudent: StudentModel) => {
+    setSelectedStudents(selectedStudents.filter((stu) => stu._id !== removedStudent._id));
+    setStudents([...students, removedStudent]);
+  };
 
   return (
     <View style={styles.container}>
@@ -28,23 +41,35 @@ export default function AddDropInsScreen({ navigation, route }: any) {
         <View style={styles.list}>
           <FlatList
             data={data}
+            keyExtractor={(student) => student._id}
             renderItem={({ item, index }) => (
-              <TouchableOpacity onPress={() => console.log(item)}>
+              <TouchableOpacity onPress={() => addStudent(item)}>
                 <ListItem last={data.length - 1 === index}>
                   <Text>{item.fullName}</Text>
                 </ListItem>
               </TouchableOpacity>
             )}
+            keyboardShouldPersistTaps="always"
           />
         </View>
       </View>
       <View style={styles.inner}>
-        <Text style={styles.text}>Lions Den Drop Ins</Text>
-        {/* <CheckItem />
-        <CheckItem />
-        <CheckItem />
-        <CheckItem />
-        <CheckItem /> */}
+        <Text style={styles.text}>Lions Den Drop Ins ({selectedStudents.length})</Text>
+        <FlatList
+          data={selectedStudents}
+          keyExtractor={(student) => student._id}
+          renderItem={({ item }) => (
+            <CheckItem text={item.fullName} onButtonPress={() => removeStudent(item)} />
+          )}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+      <View style={styles.submit}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <View style={tw("bg-blue-600 w-64 py-3 items-center rounded-md")}>
+            <Text style={tw("text-white font-medium")}>Begin Session</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -65,9 +90,11 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   inner: {
+    flex: 2,
     width: "90%",
     alignSelf: "center",
-    marginVertical: 20,
+    marginTop: 20,
+    marginBottom: 5,
     zIndex: 2,
   },
   text: {
@@ -88,6 +115,12 @@ const styles = StyleSheet.create({
       width: 0,
       height: 3,
     },
+  },
+  submit: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: 20,
+    // borderWidth: 1,
   },
 });
 
