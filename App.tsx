@@ -7,6 +7,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AccountScreen, HomeScreen, PastScreen, SelectStudentsScreen } from "./src/screens";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import AddDropInsScreen from "./src/screens/AddDropInsScreen";
+import { CurrentSessionProvider } from "./src/context/CurrentSessionContext";
 
 interface RootStackParams {
   MainStack: undefined;
@@ -21,7 +22,7 @@ export type MainStackParams = {
   AddDropIns: undefined;
 };
 
-export default function App() {
+function App() {
   const RootStack = createBottomTabNavigator<RootStackParams>();
   const MainStack = createNativeStackNavigator<MainStackParams>();
 
@@ -108,3 +109,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+export default () => {
+  return (
+    <CurrentSessionProvider>
+      <App />
+    </CurrentSessionProvider>
+  );
+};

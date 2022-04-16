@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, View, Dimensions, TouchableOpacity } from "
 import SearchBar from "react-native-dynamic-search-bar";
 import tw from "tailwind-rn";
 import StudentModel from "../../types/models/studentModel";
-import { getAllStudents } from "../api/cstoneApi";
+import { getAllStudents, startAftercareSession } from "../api/cstoneApi";
 import CheckItem from "../components/CheckItem";
 import ListItem from "../components/ListItem";
 import useFilter from "../hooks/useFilter";
@@ -26,6 +26,13 @@ export default function AddDropInsScreen({ navigation, route }: any) {
   const removeStudent = (removedStudent: StudentModel) => {
     setSelectedStudents(selectedStudents.filter((stu) => stu._id !== removedStudent._id));
     setStudents([...students, removedStudent]);
+  };
+
+  const startSession = async () => {
+    const dropInsIds = selectedStudents.map((student) => student._id);
+    const allIds = [...route.params.selectedIds, ...dropInsIds];
+    // const res = await startAftercareSession({students: allIds});
+    // navigation.navigate("Home");
   };
 
   return (
@@ -65,7 +72,7 @@ export default function AddDropInsScreen({ navigation, route }: any) {
         />
       </View>
       <View style={styles.submit}>
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+        <TouchableOpacity onPress={startSession}>
           <View style={tw("bg-blue-600 w-64 py-3 items-center rounded-md")}>
             <Text style={tw("text-white font-medium")}>Begin Session</Text>
           </View>

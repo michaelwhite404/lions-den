@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-rn";
 import StudentModel from "../../types/models/studentModel";
 import { getAftercareStudents } from "../api/cstoneApi";

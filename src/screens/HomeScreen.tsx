@@ -1,8 +1,11 @@
 import React from "react";
 import { Image, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-rn";
+import useCurrentSession from "../hooks/useCurrentSession";
 
 export default function HomeScreen({ navigation }: any) {
+  const currentSession = useCurrentSession();
+
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={require("../../assets/SleepingStudent.png")} />
