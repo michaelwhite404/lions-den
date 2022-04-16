@@ -7,4 +7,4 @@ interface APIResponse<Data> {
   data: Data;
 }
 
-export interface GetAftercareStudents extends APIResponse<{ students: StudentModel[] }> {}
+export interface StudentsResponse extends APIResponse<{ students: StudentModel[] }> {}

@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { AccountScreen, HomeScreen, PastScreen, SelectStudentsScreen } from "./src/screens";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import "react-native-reanimated";
+import AddDropInsScreen from "./src/screens/AddDropInsScreen";
 
 interface RootStackParams {
   MainStack: undefined;
@@ -18,6 +18,7 @@ interface RootStackParams {
 export type MainStackParams = {
   Home: undefined;
   SelectStudents: undefined;
+  AddDropIns: undefined;
 };
 
 export default function App() {
@@ -44,6 +45,11 @@ export default function App() {
           options={{
             headerTitle: "Select Students",
           }}
+        />
+        <MainStack.Screen
+          name="AddDropIns"
+          component={AddDropInsScreen}
+          options={{ headerTitle: "Drop Ins" }}
         />
       </MainStack.Navigator>
     );

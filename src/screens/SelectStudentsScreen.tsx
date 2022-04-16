@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import tw from "tailwind-rn";
 import StudentModel from "../../types/models/studentModel";
 import { getAftercareStudents } from "../api/cstoneApi";
 import MultiSelectList from "../components/MultiSelectList";
 
-export default function SelectStudentsScreen() {
+export default function SelectStudentsScreen({ navigation }: any) {
   const [students, setStudents] = useState<StudentModel[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -20,13 +21,24 @@ export default function SelectStudentsScreen() {
   return (
     <View style={styles.container}>
       {students.length > 0 && (
-        <MultiSelectList
-          data={students}
-          onCheckboxPress={handleAnyCheckboxPress}
-          renderItem={({ fullName }) => (
-            <Text style={{ fontSize: 15, fontWeight: "500", color: "black" }}>{fullName}</Text>
-          )}
-        />
+        <>
+          <View style={styles.list}>
+            <MultiSelectList
+              data={students}
+              onCheckboxPress={handleAnyCheckboxPress}
+              renderItem={({ fullName }) => (
+                <Text style={{ fontSize: 15, fontWeight: "500", color: "black" }}>{fullName}</Text>
+              )}
+            />
+          </View>
+          <View style={styles.buttons}>
+            <TouchableOpacity onPress={() => navigation.navigate("AddDropIns", { selectedIds })}>
+              <View style={tw("bg-blue-600 w-64 py-3 items-center rounded-md")}>
+                <Text style={tw("text-white font-medium")}>Add Drop Ins</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </>
       )}
     </View>
   );
@@ -34,6 +46,17 @@ export default function SelectStudentsScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10,
+    // paddingTop: 10,
+    flexDirection: "column",
+    flex: 1,
+  },
+  list: {
+    flex: 10,
+  },
+  buttons: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: 10,
   },
 });
