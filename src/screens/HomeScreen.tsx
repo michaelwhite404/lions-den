@@ -2,13 +2,13 @@ import React from "react";
 import { Image, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-rn";
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={require("../../assets/SleepingStudent.png")} />
       <Text style={styles.text}>There is no active session</Text>
       <View style={tw("absolute bottom-0")}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("SelectStudents")}>
           <View style={tw("bg-blue-600 w-64 py-3 items-center rounded-md mt-6")}>
             <Text style={tw("text-white font-medium")}>Start Session</Text>
           </View>
