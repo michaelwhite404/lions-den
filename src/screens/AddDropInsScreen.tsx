@@ -4,9 +4,11 @@ import SearchBar from "react-native-dynamic-search-bar";
 import StudentModel from "../../types/models/studentModel";
 import { getAllStudents } from "../api/cstoneApi";
 import CheckItem from "../components/CheckItem";
+import useFilter from "../hooks/useFilter";
 
 export default function AddDropInsScreen({ navigation, route }: any) {
   const [students, setStudents] = useState<StudentModel[]>([]);
+  const { data, filter, setFilter } = useFilter(students, "fullName");
 
   useEffect(() => {
     // console.log(route.params.selectedIds);
@@ -15,15 +17,15 @@ export default function AddDropInsScreen({ navigation, route }: any) {
 
   return (
     <View style={styles.container}>
-      <SearchBar placeholder="Search for students..." />
+      <SearchBar value={filter} placeholder="Search for students..." onChangeText={setFilter} />
       <View style={styles.inner}>
         <Text style={styles.text}>Lions Den Drop Ins</Text>
+        {/* <CheckItem />
         <CheckItem />
         <CheckItem />
         <CheckItem />
-        <CheckItem />
-        <CheckItem />
-        {/* <FlatList data={students} renderItem={({ item }) => <Text>{item.fullName}</Text>} /> */}
+        <CheckItem /> */}
+        <FlatList data={data} renderItem={({ item }) => <Text>{item.fullName}</Text>} />
       </View>
     </View>
   );
