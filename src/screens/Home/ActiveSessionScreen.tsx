@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { CurrentSession } from "../../context/CurrentSessionContext";
 
@@ -10,34 +10,54 @@ export default function ActiveSessionScreen({
   navigation: any;
   currentSession: CurrentSession;
 }) {
-  const length = currentSession.attendance.length;
+  const awaitingPickUp = currentSession.attendance.filter((entry) => !entry.signOutDate);
+  const pickedUp = currentSession.attendance.filter((entry) => entry.signOutDate);
 
   return (
     <View>
-      <View>
-        <Text style={styles.head}>Awaiting Pickup ({length})</Text>
-        <FlatList
-          data={currentSession.attendance}
-          keyExtractor={(entry) => entry._id}
-          scrollEnabled={false}
-          renderItem={({ item }) => (
-            <View style={styles.row}>
-              <View>
-                <Text style={styles.name}>{item.student.fullName}</Text>
-                <Text style={styles.email}>{item.student.schoolEmail}</Text>
-              </View>
-              <TouchableOpacity onPress={() => navigation.navigate("Signature", { entry: item })}>
-                {!item.signOutDate && (
+      {awaitingPickUp.length > 0 && (
+        <View>
+          <Text style={styles.head}>Awaiting Pickup ({awaitingPickUp.length})</Text>
+          <FlatList
+            data={awaitingPickUp}
+            keyExtractor={(entry) => entry._id}
+            scrollEnabled={false}
+            renderItem={({ item }) => (
+              <View style={styles.row}>
+                <View>
+                  <Text style={styles.name}>{item.student.fullName}</Text>
+                  <Text style={styles.email}>{item.student.schoolEmail}</Text>
+                </View>
+                <TouchableOpacity onPress={() => navigation.navigate("Signature", { entry: item })}>
                   <View style={styles.button}>
                     <Text style={styles.signOut}>Sign Out</Text>
                     <Ionicons name="ios-chevron-forward-outline" size={20} color="#0a84ff" />
                   </View>
-                )}
-              </TouchableOpacity>
-            </View>
-          )}
-        />
-      </View>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+        </View>
+      )}
+      {pickedUp.length > 0 && (
+        <View>
+          <Text style={styles.head}>Picked Up ({pickedUp.length})</Text>
+          <FlatList
+            data={pickedUp}
+            keyExtractor={(entry) => entry._id}
+            scrollEnabled={false}
+            renderItem={({ item }) => (
+              <View style={styles.row}>
+                <View>
+                  <Text style={styles.name}>{item.student.fullName}</Text>
+                  <Text style={styles.email}>{item.student.schoolEmail}</Text>
+                </View>
+                <Image style={styles.signature} source={{ uri: item.signature }} />
+              </View>
+            )}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -78,5 +98,10 @@ const styles = StyleSheet.create({
   },
   signOut: {
     color: "#0a84ff",
+  },
+  signature: {
+    width: 80,
+    height: 40,
+    alignSelf: "center",
   },
 });
