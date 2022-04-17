@@ -3,12 +3,13 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { AccountScreen, HomeScreen, PastScreen, SelectStudentsScreen } from "./src/screens";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import AddDropInsScreen from "./src/screens/AddDropInsScreen";
 import { CurrentSessionProvider } from "./src/context/CurrentSessionContext";
 import SignatureScreen from "./src/screens/SignatureScreen";
+import { useLayoutEffect } from "react";
 
 interface RootStackParams {
   MainStack: undefined;
@@ -28,7 +29,17 @@ function App() {
   const RootStack = createBottomTabNavigator<RootStackParams>();
   const MainStack = createNativeStackNavigator<MainStackParams>();
 
-  const MainScreenStack = () => {
+  const MainScreenStack = ({ navigation, route }: any) => {
+    useLayoutEffect(() => {
+      const routeName = getFocusedRouteNameFromRoute(route);
+      console.log(routeName);
+      if (routeName === "Signature") {
+        navigation.setOptions({ tabBarStyle: { display: "none" } });
+      } else {
+        navigation.setOptions({ tabBarStyle: { display: "flex" } });
+      }
+    }, [navigation, route]);
+
     return (
       <MainStack.Navigator initialRouteName="Home">
         <MainStack.Screen
@@ -67,7 +78,7 @@ function App() {
         screenOptions={() => ({
           tabBarActiveTintColor: "dodgerblue",
           tabBarInactiveTintColor: "gray",
-          // tabBarStyle: { display: "none" },
+          // tabBarStyle: { display: visibility(route) },
         })}
       >
         <RootStack.Screen

@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { CurrentSession } from "../../context/CurrentSessionContext";
 
 export default function ActiveSessionScreen({
@@ -16,18 +16,18 @@ export default function ActiveSessionScreen({
       <FlatList
         data={currentSession.attendance}
         keyExtractor={(entry) => entry._id}
-        renderItem={({ item }) => <Row text={item.student.fullName} />}
+        renderItem={({ item }) => (
+          <View style={styles.row}>
+            <Text>{item.student.fullName}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("Signature", { entry: item })}>
+              <Text>Sign Out</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       />
     </View>
   );
 }
-
-const Row = ({ text }: { text: string }) => (
-  <View style={styles.row}>
-    <Text>{text}</Text>
-    <Text>Sign Out</Text>
-  </View>
-);
 
 const styles = StyleSheet.create({
   row: {
