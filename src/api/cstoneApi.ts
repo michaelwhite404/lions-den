@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StudentsResponse } from "../../types/apiResponse";
+import { StartSessionResonse, StudentsResponse } from "../../types/apiResponse";
 import StudentModel from "../../types/models/studentModel";
 
 const cstoneApi = axios.create({
@@ -19,9 +19,14 @@ export const getAftercareStudents = async () => {
   return res.data.data.students;
 };
 
-export const startAftercareSession = async ({ students }: { students: string[] }) => {
+export const startAftercareSession = async (params: { students: string[] }) => {
   const token = await getToken();
-  const res = await cstoneApi.post("/aftercare/session", {}, headers(token));
+  const res = await cstoneApi.post<StartSessionResonse>(
+    "/aftercare/session",
+    params,
+    headers(token)
+  );
+  return res.data.data;
 };
 
 interface GetAllStudentParams extends Partial<StudentModel> {

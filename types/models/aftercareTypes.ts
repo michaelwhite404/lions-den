@@ -1,17 +1,21 @@
 import StudentModel from "./studentModel";
 
-export interface AftercareAttendanceEntryModel {
-  _id: any;
-  student: StudentModel;
+export interface AftercareAttendanceEntry {
+  _id: string;
+  student: {
+    _id: StudentModel["_id"];
+    fullName: StudentModel["fullName"];
+    schoolEmail: StudentModel["schoolEmail"];
+  };
   session: any;
   signOutDate?: Date;
   signature?: string;
   lateSignOut?: boolean;
   dropIn: boolean;
 }
-export interface AftercareSessionModel {
+export interface AftercareSession {
   /** Id of the aftercare session */
-  _id: any;
+  _id: string;
   date: Date;
   active: boolean;
   numAttended: number;

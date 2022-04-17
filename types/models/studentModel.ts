@@ -1,6 +1,6 @@
 export default interface StudentModel {
   /** Id of the student */
-  _id: any;
+  _id: string;
   firstName: string;
   lastName: string;
   fullName: string;

@@ -6,12 +6,14 @@ import StudentModel from "../../types/models/studentModel";
 import { getAllStudents, startAftercareSession } from "../api/cstoneApi";
 import CheckItem from "../components/CheckItem";
 import ListItem from "../components/ListItem";
+import useCurrentSession from "../hooks/useCurrentSession";
 import useFilter from "../hooks/useFilter";
 
 export default function AddDropInsScreen({ navigation, route }: any) {
   const [students, setStudents] = useState<StudentModel[]>([]);
   const { data, filter, setFilter } = useFilter(students, "fullName");
   const [selectedStudents, setSelectedStudents] = useState<StudentModel[]>([]);
+  const { setSession, setAttendance } = useCurrentSession();
 
   useEffect(() => {
     getAllStudents({ status: "Active", aftercare: false }).then(setStudents).catch(console.error);
@@ -30,9 +32,14 @@ export default function AddDropInsScreen({ navigation, route }: any) {
 
   const startSession = async () => {
     const dropInsIds = selectedStudents.map((student) => student._id);
-    const allIds = [...route.params.selectedIds, ...dropInsIds];
-    // const res = await startAftercareSession({students: allIds});
-    // navigation.navigate("Home");
+    const allIds = [...(route.params.selectedIds as string[]), ...dropInsIds];
+    startAftercareSession({ students: allIds })
+      .then((response) => {
+        setSession(response.session);
+        setAttendance(response.attendance);
+        navigation.navigate("Home");
+      })
+      .catch(console.error);
   };
 
   return (
