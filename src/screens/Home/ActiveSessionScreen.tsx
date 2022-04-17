@@ -20,7 +20,7 @@ export default function ActiveSessionScreen({
           <View style={styles.row}>
             <Text>{item.student.fullName}</Text>
             <TouchableOpacity onPress={() => navigation.navigate("Signature", { entry: item })}>
-              <Text>Sign Out</Text>
+              {!item.signOutDate && <Text>Sign Out</Text>}
             </TouchableOpacity>
           </View>
         )}

@@ -1,6 +1,11 @@
 import axios, { AxiosRequestConfig } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SignoutResponse, StartSessionResonse, StudentsResponse } from "../../types/apiResponse";
+import {
+  SignoutResponse,
+  StartSessionResponse,
+  StudentsResponse,
+  SessionTodayResponse,
+} from "../../types/apiResponse";
 import StudentModel from "../../types/models/studentModel";
 
 const cstoneApi = axios.create({
@@ -21,7 +26,7 @@ export const getAftercareStudents = async () => {
 
 export const startAftercareSession = async (params: { students: string[] }) => {
   const token = await getToken();
-  const res = await cstoneApi.post<StartSessionResonse>(
+  const res = await cstoneApi.post<StartSessionResponse>(
     "/aftercare/session",
     params,
     headers(token)
@@ -53,6 +58,12 @@ export const signOutStudent = async (studentId: string, body: { signature: strin
     headers(token)
   );
   return res.data.data.entry;
+};
+
+export const getSessionToday = async () => {
+  const token = await getToken();
+  const res = await cstoneApi.get<SessionTodayResponse>("/aftercare/session/today", headers(token));
+  return res.data.data;
 };
 
 const getToken = async () => await AsyncStorage.getItem("token");

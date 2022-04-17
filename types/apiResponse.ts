@@ -10,8 +10,14 @@ interface APIResponse<Data> {
 
 export interface StudentsResponse extends APIResponse<{ students: StudentModel[] }> {}
 
-export interface StartSessionResonse
+export interface StartSessionResponse
   extends APIResponse<{ session: AftercareSession; attendance: AftercareAttendanceEntry[] }> {}
 
 export interface SignoutResponse
   extends APIResponse<{ entry: Required<AftercareAttendanceEntry> }> {}
+
+export interface SessionTodayResponse
+  extends APIResponse<{
+    session: AftercareSession | null;
+    attendance: AftercareAttendanceEntry[];
+  }> {}
