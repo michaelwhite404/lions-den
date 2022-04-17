@@ -1,13 +1,13 @@
 import React from "react";
-import { Text } from "react-native";
 import useCurrentSession from "../hooks/useCurrentSession";
+import ActiveSessionScreen from "./Home/ActiveSessionScreen";
 import InactiveSessionScreen from "./Home/InactiveSessionScreen";
 
 export default function HomeScreen({ navigation }: any) {
-  const { session } = useCurrentSession();
+  const currentSession = useCurrentSession();
 
-  return session ? (
-    <Text>We have a session</Text>
+  return currentSession.session ? (
+    <ActiveSessionScreen currentSession={currentSession} navigation={navigation} />
   ) : (
     <InactiveSessionScreen navigation={navigation} />
   );
