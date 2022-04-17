@@ -32,7 +32,6 @@ function App() {
   const MainScreenStack = ({ navigation, route }: any) => {
     useLayoutEffect(() => {
       const routeName = getFocusedRouteNameFromRoute(route);
-      console.log(routeName);
       if (routeName === "Signature") {
         navigation.setOptions({ tabBarStyle: { display: "none" } });
       } else {

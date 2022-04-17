@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StartSessionResonse, StudentsResponse } from "../../types/apiResponse";
+import { SignoutResponse, StartSessionResonse, StudentsResponse } from "../../types/apiResponse";
 import StudentModel from "../../types/models/studentModel";
 
 const cstoneApi = axios.create({
@@ -43,6 +43,16 @@ export const getAllStudents = async (params: GetAllStudentParams = {}) => {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res.data.data.students;
+};
+
+export const signOutStudent = async (studentId: string, body: { signature: string }) => {
+  const token = await getToken();
+  const res = await cstoneApi.patch<SignoutResponse>(
+    `/aftercare/attendance/sign-out/${studentId}`,
+    body,
+    headers(token)
+  );
+  return res.data.data.entry;
 };
 
 const getToken = async () => await AsyncStorage.getItem("token");

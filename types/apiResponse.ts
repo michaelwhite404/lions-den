@@ -12,3 +12,6 @@ export interface StudentsResponse extends APIResponse<{ students: StudentModel[]
 
 export interface StartSessionResonse
   extends APIResponse<{ session: AftercareSession; attendance: AftercareAttendanceEntry[] }> {}
+
+export interface SignoutResponse
+  extends APIResponse<{ entry: Required<AftercareAttendanceEntry> }> {}
