@@ -8,6 +8,7 @@ import { AccountScreen, HomeScreen, PastScreen, SelectStudentsScreen } from "./s
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import AddDropInsScreen from "./src/screens/AddDropInsScreen";
 import { CurrentSessionProvider } from "./src/context/CurrentSessionContext";
+import SignatureScreen from "./src/screens/SignatureScreen";
 
 interface RootStackParams {
   MainStack: undefined;
@@ -20,6 +21,7 @@ export type MainStackParams = {
   Home: undefined;
   SelectStudents: undefined;
   AddDropIns: undefined;
+  Signature: undefined;
 };
 
 function App() {
@@ -52,6 +54,7 @@ function App() {
           component={AddDropInsScreen}
           options={{ headerTitle: "Drop Ins" }}
         />
+        <MainStack.Screen name="Signature" component={SignatureScreen} />
       </MainStack.Navigator>
     );
   };
@@ -64,6 +67,7 @@ function App() {
         screenOptions={() => ({
           tabBarActiveTintColor: "dodgerblue",
           tabBarInactiveTintColor: "gray",
+          // tabBarStyle: { display: "none" },
         })}
       >
         <RootStack.Screen

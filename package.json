@@ -24,9 +24,11 @@
     "react-native-dynamic-search-bar": "^2.0.2",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
+    "react-native-signature-canvas": "^4.3.0",
     "react-native-web": "0.17.1",
     "react-table": "^7.7.0",
-    "tailwind-rn": "^3.0.1"
+    "tailwind-rn": "^3.0.1",
+    "expo-screen-orientation": "~4.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
