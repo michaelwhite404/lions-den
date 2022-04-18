@@ -21,3 +21,5 @@ export interface SessionTodayResponse
     session: AftercareSession | null;
     attendance: AftercareAttendanceEntry[];
   }> {}
+
+export interface SessionsResponse extends APIResponse<{ sessions: AftercareSession[] }> {}

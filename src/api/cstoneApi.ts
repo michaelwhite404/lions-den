@@ -5,6 +5,7 @@ import {
   StartSessionResponse,
   StudentsResponse,
   SessionTodayResponse,
+  SessionsResponse,
 } from "../../types/apiResponse";
 import StudentModel from "../../types/models/studentModel";
 
@@ -64,6 +65,12 @@ export const getSessionToday = async () => {
   const token = await getToken();
   const res = await cstoneApi.get<SessionTodayResponse>("/aftercare/session/today", headers(token));
   return res.data.data;
+};
+
+export const getAllAftercareSessions = async () => {
+  const token = await getToken();
+  const res = await cstoneApi.get<SessionsResponse>("/aftercare/session", headers(token));
+  return res.data.data.sessions;
 };
 
 const getToken = async () => await AsyncStorage.getItem("token");
