@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-rn";
@@ -22,7 +23,7 @@ export default function PastScreen() {
           <TouchableOpacity>
             <View style={styles.row}>
               <View>
-                <Text style={styles.date}>{new Date(item.date).toDateString()}</Text>
+                <Text style={styles.date}>{moment(item.date).format("dddd MMMM D, YYYY")}</Text>
                 <Text style={styles.text}>Students Attended: {item.numAttended}</Text>
                 <Text style={styles.text}>Drop Ins: {item.dropIns}</Text>
               </View>

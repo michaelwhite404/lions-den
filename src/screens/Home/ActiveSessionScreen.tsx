@@ -2,6 +2,7 @@ import React from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { CurrentSession } from "../../context/CurrentSessionContext";
+import moment from "moment";
 
 export default function ActiveSessionScreen({
   navigation,
@@ -51,6 +52,8 @@ export default function ActiveSessionScreen({
                 <View>
                   <Text style={styles.name}>{item.student.fullName}</Text>
                   <Text style={styles.email}>{item.student.schoolEmail}</Text>
+                  {/* <Text>{timeFromDate(new Date(item.signOutDate!))}</Text> */}
+                  <Text style={styles.email}>Time: {moment(item.signOutDate!).format("LT")}</Text>
                 </View>
                 <Image style={styles.signature} source={{ uri: item.signature }} />
               </View>
@@ -91,6 +94,7 @@ const styles = StyleSheet.create({
   email: {
     fontSize: 12,
     color: "#9f9f9f",
+    marginBottom: 3,
   },
   button: {
     flexDirection: "row",
