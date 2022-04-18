@@ -1,14 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Signature from "react-native-signature-canvas";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { AftercareAttendanceEntry } from "../../types/models/aftercareTypes";
 import { signOutStudent } from "../api/cstoneApi";
-import LZString from "lz-string";
-import { CurrentSession } from "../context/CurrentSessionContext";
 import useCurrentSession from "../hooks/useCurrentSession";
 
 export default function SignatureScreen({ route, navigation }: any) {
   const { attendance, setAttendance } = useCurrentSession();
+  const [locked, setLocked] = useState(false);
   const entry = route.params.entry as AftercareAttendanceEntry;
 
   async function changeLandscape() {
@@ -20,22 +19,24 @@ export default function SignatureScreen({ route, navigation }: any) {
   }
 
   const onSubmit = (signature: string) => {
-    // console.log(signature.length);
-    // const compressed = LZString.compress(signature);
-    // console.log("-----------");
-    // console.log(compressed.length);
-    signOutStudent(entry!._id, { signature })
-      .then((returnedEntry) => {
-        const index = attendance.findIndex(
-          (singleEntry) => singleEntry.student._id === returnedEntry.student._id
-        )!;
-        const newAttendance = [...attendance];
-        newAttendance[index] = returnedEntry;
-        setAttendance(newAttendance);
-        console.log("submitted");
-        navigation.navigate("Home");
-      })
-      .catch(console.error);
+    if (!locked) {
+      setLocked(true);
+      signOutStudent(entry!._id, { signature })
+        .then((returnedEntry) => {
+          const index = attendance.findIndex(
+            (singleEntry) => singleEntry.student._id === returnedEntry.student._id
+          )!;
+          const newAttendance = [...attendance];
+          newAttendance[index] = returnedEntry;
+          setAttendance(newAttendance);
+          console.log("submitted");
+          navigation.navigate("Home");
+        })
+        .catch((err) => {
+          console.error(err);
+          setLocked(false);
+        });
+    }
   };
 
   useEffect(() => {
