@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View, Image } from "react
 import { Ionicons } from "@expo/vector-icons";
 import { CurrentSession } from "../../context/CurrentSessionContext";
 import moment from "moment";
+import { getSignatureURL } from "../../api/cstoneApi";
 
 export default function ActiveSessionScreen({
   navigation,
@@ -52,10 +53,12 @@ export default function ActiveSessionScreen({
                 <View>
                   <Text style={styles.name}>{item.student.fullName}</Text>
                   <Text style={styles.email}>{item.student.schoolEmail}</Text>
-                  {/* <Text>{timeFromDate(new Date(item.signOutDate!))}</Text> */}
                   <Text style={styles.email}>Time: {moment(item.signOutDate!).format("LT")}</Text>
                 </View>
-                <Image style={styles.signature} source={{ uri: item.signature }} />
+                <Image
+                  style={styles.signature}
+                  source={{ uri: getSignatureURL(item.signature!) }}
+                />
               </View>
             )}
           />

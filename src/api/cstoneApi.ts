@@ -74,3 +74,6 @@ export const getAllAftercareSessions = async () => {
 };
 
 const getToken = async () => await AsyncStorage.getItem("token");
+
+export const getSignatureURL = (key: string) =>
+  `${cstoneApi.defaults.baseURL?.replace("/api/v2", "")}/images/${key}`;
