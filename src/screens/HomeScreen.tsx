@@ -8,9 +8,7 @@ export default function HomeScreen({ navigation }: any) {
 
   if (!currentSession.loaded) return null;
 
-  return currentSession.session ? (
-    <ActiveSessionScreen currentSession={currentSession} navigation={navigation} />
-  ) : (
-    <InactiveSessionScreen navigation={navigation} refresh={currentSession.refreshSession} />
-  );
+  const SessionScreen = currentSession.session ? ActiveSessionScreen : InactiveSessionScreen;
+
+  return <SessionScreen navigation={navigation} currentSession={currentSession} />;
 }

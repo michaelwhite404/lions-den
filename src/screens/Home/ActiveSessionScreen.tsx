@@ -1,70 +1,52 @@
 import React from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { CurrentSession } from "../../context/CurrentSessionContext";
 import moment from "moment";
+import { Ionicons } from "@expo/vector-icons";
 import { getSignatureURL } from "../../api/cstoneApi";
+import SessionScreenProps from "../../../types/sessionScreenProps";
+import Refresh from "../../components/Refresh";
 
-export default function ActiveSessionScreen({
-  navigation,
-  currentSession,
-}: {
-  navigation: any;
-  currentSession: CurrentSession;
-}) {
+export default function ActiveSessionScreen({ navigation, currentSession }: SessionScreenProps) {
   const awaitingPickUp = currentSession.attendance.filter((entry) => !entry.signOutDate);
   const pickedUp = currentSession.attendance.filter((entry) => entry.signOutDate);
 
   return (
-    <View>
+    <Refresh onRefresh={currentSession.refreshSession}>
       {awaitingPickUp.length > 0 && (
         <View>
           <Text style={styles.head}>Awaiting Pickup ({awaitingPickUp.length})</Text>
-          <FlatList
-            data={awaitingPickUp}
-            keyExtractor={(entry) => entry._id}
-            scrollEnabled={false}
-            renderItem={({ item }) => (
-              <View style={styles.row}>
-                <View>
-                  <Text style={styles.name}>{item.student.fullName}</Text>
-                  <Text style={styles.email}>{item.student.schoolEmail}</Text>
-                </View>
-                <TouchableOpacity onPress={() => navigation.navigate("Signature", { entry: item })}>
-                  <View style={styles.button}>
-                    <Text style={styles.signOut}>Sign Out</Text>
-                    <Ionicons name="ios-chevron-forward-outline" size={20} color="#0a84ff" />
-                  </View>
-                </TouchableOpacity>
+          {awaitingPickUp.map((entry) => (
+            <View key={entry._id} style={styles.row}>
+              <View>
+                <Text style={styles.name}>{entry.student.fullName}</Text>
+                <Text style={styles.email}>{entry.student.schoolEmail}</Text>
               </View>
-            )}
-          />
+              <TouchableOpacity onPress={() => navigation.navigate("Signature", { entry })}>
+                <View style={styles.button}>
+                  <Text style={styles.signOut}>Sign Out</Text>
+                  <Ionicons name="ios-chevron-forward-outline" size={20} color="#0a84ff" />
+                </View>
+              </TouchableOpacity>
+            </View>
+          ))}
         </View>
       )}
       {pickedUp.length > 0 && (
         <View>
           <Text style={styles.head}>Picked Up ({pickedUp.length})</Text>
-          <FlatList
-            data={pickedUp}
-            keyExtractor={(entry) => entry._id}
-            scrollEnabled={false}
-            renderItem={({ item }) => (
-              <View style={styles.row}>
-                <View>
-                  <Text style={styles.name}>{item.student.fullName}</Text>
-                  <Text style={styles.email}>{item.student.schoolEmail}</Text>
-                  <Text style={styles.email}>Time: {moment(item.signOutDate!).format("LT")}</Text>
-                </View>
-                <Image
-                  style={styles.signature}
-                  source={{ uri: getSignatureURL(item.signature!) }}
-                />
+          {pickedUp.map((entry) => (
+            <View key={entry._id} style={styles.row}>
+              <View>
+                <Text style={styles.name}>{entry.student.fullName}</Text>
+                <Text style={styles.email}>{entry.student.schoolEmail}</Text>
+                <Text style={styles.email}>Time: {moment(entry.signOutDate!).format("LT")}</Text>
               </View>
-            )}
-          />
+              <Image style={styles.signature} source={{ uri: getSignatureURL(entry.signature!) }} />
+            </View>
+          ))}
         </View>
       )}
-    </View>
+    </Refresh>
   );
 }
 
