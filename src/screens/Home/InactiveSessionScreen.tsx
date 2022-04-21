@@ -1,20 +1,23 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-rn";
+import Refresh from "../../components/Refresh";
 
-export default function InactiveSessionScreen({ navigation }: any) {
+export default function InactiveSessionScreen({ navigation, refresh }: any) {
   return (
-    <View style={styles.container}>
-      <Image style={styles.image} source={require("../../../assets/SleepingStudent.png")} />
-      <Text style={styles.text}>There is no active session</Text>
-      <View style={tw("absolute bottom-0")}>
-        <TouchableOpacity onPress={() => navigation.navigate("SelectStudents")}>
-          <View style={tw("bg-blue-600 w-64 py-3 items-center rounded-md mt-6")}>
-            <Text style={tw("text-white font-medium")}>Start Session</Text>
-          </View>
-        </TouchableOpacity>
+    <Refresh onRefresh={refresh}>
+      <View style={styles.container}>
+        <Image style={styles.image} source={require("../../../assets/SleepingStudent.png")} />
+        <Text style={styles.text}>There is no active session</Text>
+        <View style={tw("absolute bottom-0")}>
+          <TouchableOpacity onPress={() => navigation.navigate("SelectStudents")}>
+            <View style={tw("bg-blue-600 w-64 py-3 items-center rounded-md mt-6")}>
+              <Text style={tw("text-white font-medium")}>Start Session</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </Refresh>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState, ReactChild } from "react";
+import React, { createContext, useEffect, useState, ReactChild, useCallback } from "react";
 import { AftercareAttendanceEntry, AftercareSession } from "../../types/models/aftercareTypes";
 import { getSessionToday } from "../api/cstoneApi";
 
@@ -8,6 +8,7 @@ export interface CurrentSession {
   attendance: AftercareAttendanceEntry[];
   setAttendance: React.Dispatch<React.SetStateAction<AftercareAttendanceEntry[]>>;
   loaded: boolean;
+  refreshSession: () => void;
 }
 
 export const CurrentSessionContext = createContext({} as CurrentSession);
@@ -18,6 +19,10 @@ export function CurrentSessionProvider({ children }: { children: ReactChild }) {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    refreshSession();
+  }, []);
+
+  const refreshSession = useCallback(() => {
     getSessionToday().then((sessionToday) => {
       setSession(sessionToday.session);
       setAttendance(sessionToday.attendance);
@@ -28,7 +33,7 @@ export function CurrentSessionProvider({ children }: { children: ReactChild }) {
 
   return (
     <CurrentSessionContext.Provider
-      value={{ session, setSession, attendance, setAttendance, loaded }}
+      value={{ session, setSession, attendance, setAttendance, loaded, refreshSession }}
     >
       {children}
     </CurrentSessionContext.Provider>

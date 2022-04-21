@@ -69,7 +69,10 @@ export const getSessionToday = async () => {
 
 export const getAllAftercareSessions = async () => {
   const token = await getToken();
-  const res = await cstoneApi.get<SessionsResponse>("/aftercare/session", headers(token));
+  const res = await cstoneApi.get<SessionsResponse>("/aftercare/session", {
+    params: { sort: "-date" },
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return res.data.data.sessions;
 };
 
