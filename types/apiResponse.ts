@@ -1,5 +1,6 @@
 import { AftercareAttendanceEntry, AftercareSession } from "./models/aftercareTypes";
 import StudentModel from "./models/studentModel";
+import { User } from "./models/userModel";
 
 interface APIResponse<Data> {
   status: "success";
@@ -23,3 +24,7 @@ export interface SessionTodayResponse
   }> {}
 
 export interface SessionsResponse extends APIResponse<{ sessions: AftercareSession[] }> {}
+
+export interface SignInResponse extends Omit<APIResponse<{ employee: User }>, "requestedAt"> {
+  token: string;
+}

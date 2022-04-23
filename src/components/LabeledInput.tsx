@@ -6,6 +6,7 @@ interface LabeledInputProps {
   label?: string;
   value?: string;
   onChangeText?: (name: string, text: string) => void;
+  secureTextEntry?: boolean;
 }
 
 export default function LabeledInput(props: LabeledInputProps) {
@@ -20,6 +21,7 @@ export default function LabeledInput(props: LabeledInputProps) {
         ]}
       >
         <TextInput
+          secureTextEntry={props.secureTextEntry}
           autoCapitalize="none"
           value={props.value}
           onFocus={() => setFocused(true)}
@@ -41,13 +43,11 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     shadowColor: "#757575",
     shadowRadius: 8,
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.25,
     shadowOffset: {
       width: 0,
       height: 3,
     },
-    // borderColor: "red",
-    // borderWidth: 1,
     backgroundColor: "white",
     marginTop: 10,
     borderWidth: 2,

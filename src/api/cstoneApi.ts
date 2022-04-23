@@ -6,8 +6,10 @@ import {
   StudentsResponse,
   SessionTodayResponse,
   SessionsResponse,
+  SignInResponse,
 } from "../../types/apiResponse";
 import StudentModel from "../../types/models/studentModel";
+import Credentials from "../../types/credentials";
 
 const cstoneApi = axios.create({
   baseURL: "https://fc92-108-31-65-13.ngrok.io/api/v2",
@@ -74,6 +76,11 @@ export const getAllAftercareSessions = async () => {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res.data.data.sessions;
+};
+
+export const signIn = async (credentials: Credentials) => {
+  const res = await cstoneApi.post<SignInResponse>("/users/login", credentials);
+  return { token: res.data.token, user: res.data.data.employee };
 };
 
 const getToken = async () => await AsyncStorage.getItem("token");

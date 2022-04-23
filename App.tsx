@@ -11,6 +11,7 @@ import { CurrentSessionProvider } from "./src/context/CurrentSessionContext";
 import SignatureScreen from "./src/screens/SignatureScreen";
 import { useLayoutEffect } from "react";
 import SignInScreen from "./src/screens/SignInScreen";
+import AuthProvider from "./src/context/AuthContext";
 
 interface RootStackParams {
   MainStack: undefined;
@@ -147,8 +148,10 @@ const styles = StyleSheet.create({
 
 export default () => {
   return (
-    <CurrentSessionProvider>
-      <App />
-    </CurrentSessionProvider>
+    <AuthProvider>
+      <CurrentSessionProvider>
+        <App />
+      </CurrentSessionProvider>
+    </AuthProvider>
   );
 };
