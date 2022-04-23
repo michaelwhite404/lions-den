@@ -5,6 +5,7 @@ import tw from "tailwind-rn";
 
 import { AftercareSession } from "../../types/models/aftercareTypes";
 import { getAllAftercareSessions } from "../api/cstoneApi";
+import RefreshFlatList from "../components/RefreshFlatList";
 
 export default function PastScreen() {
   const [sessions, setSessions] = useState<AftercareSession[]>([]);
@@ -14,35 +15,32 @@ export default function PastScreen() {
   }, []);
 
   return (
-    <View>
-      <FlatList
-        data={sessions}
-        keyExtractor={(session) => session._id}
-        scrollEnabled={false}
-        renderItem={({ item }) => (
-          <TouchableOpacity>
-            <View style={styles.row}>
-              <View>
-                <Text style={styles.date}>{moment(item.date).format("dddd MMMM D, YYYY")}</Text>
-                <Text style={styles.text}>Students Attended: {item.numAttended}</Text>
-                <Text style={styles.text}>Drop Ins: {item.dropIns}</Text>
-              </View>
-              {item.active && (
-                <View>
-                  <View
-                    style={tw(
-                      "items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 "
-                    )}
-                  >
-                    <Text>Active</Text>
-                  </View>
-                </View>
-              )}
+    <RefreshFlatList
+      data={sessions}
+      keyExtractor={(session) => session._id}
+      renderItem={({ item }) => (
+        <TouchableOpacity>
+          <View style={styles.row}>
+            <View>
+              <Text style={styles.date}>{moment(item.date).format("dddd MMMM D, YYYY")}</Text>
+              <Text style={styles.text}>Students Attended: {item.numAttended}</Text>
+              <Text style={styles.text}>Drop Ins: {item.dropIns}</Text>
             </View>
-          </TouchableOpacity>
-        )}
-      />
-    </View>
+            {item.active && (
+              <View>
+                <View
+                  style={tw(
+                    "items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 "
+                  )}
+                >
+                  <Text>Active</Text>
+                </View>
+              </View>
+            )}
+          </View>
+        </TouchableOpacity>
+      )}
+    />
   );
 }
 
