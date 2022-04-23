@@ -1,16 +1,21 @@
 import React, { ReactNode, useCallback, useState } from "react";
-import { RefreshControl, ScrollView, StyleSheet } from "react-native";
+import { RefreshControl, ScrollView, ScrollViewProps, StyleSheet } from "react-native";
 
 const wait = (timeout: number) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-interface RefreshScrollViewProps {
+interface RefreshScrollViewProps
+  extends Omit<ScrollViewProps, "refreshControl" | "showsVerticalScrollIndicator"> {
   children: ReactNode;
   onRefresh?: () => void;
 }
 
-export default function RefreshScrollView({ children, onRefresh }: RefreshScrollViewProps) {
+export default function RefreshScrollView({
+  children,
+  onRefresh,
+  ...props
+}: RefreshScrollViewProps) {
   const [refreshing, setRefreshing] = useState(false);
 
   const refresh = useCallback(() => {
@@ -23,17 +28,13 @@ export default function RefreshScrollView({ children, onRefresh }: RefreshScroll
 
   return (
     <ScrollView
-      contentContainerStyle={styles.container}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}
       showsVerticalScrollIndicator={false}
+      {...props}
     >
       {children}
     </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+const styles = StyleSheet.create({});

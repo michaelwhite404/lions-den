@@ -1,6 +1,6 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-rn";
 
 import { AftercareSession } from "../../types/models/aftercareTypes";
@@ -11,11 +11,14 @@ export default function PastScreen() {
   const [sessions, setSessions] = useState<AftercareSession[]>([]);
 
   useEffect(() => {
-    getAllAftercareSessions().then(setSessions).catch(console.error);
+    getSessions();
   }, []);
+
+  const getSessions = () => getAllAftercareSessions().then(setSessions).catch(console.error);
 
   return (
     <RefreshFlatList
+      onRefresh={getSessions}
       data={sessions}
       keyExtractor={(session) => session._id}
       renderItem={({ item }) => (
