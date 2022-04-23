@@ -5,7 +5,10 @@ import useAuth from "../hooks/useAuth";
 import AccountRow from "../components/AccountRow";
 
 export default function AccountScreen() {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
+
+  const signOutUser = () => setTimeout(() => signOut(), 500);
+
   return (
     <View style={styles.container}>
       {/* Profile */}
@@ -23,6 +26,7 @@ export default function AccountScreen() {
           text="Log out"
           icon={<Ionicons name="log-out-outline" size={24} color="red" />}
           color="red"
+          onPress={signOutUser}
         />
       </View>
     </View>

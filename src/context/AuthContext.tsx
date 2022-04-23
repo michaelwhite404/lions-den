@@ -7,6 +7,7 @@ import * as cstoneApi from "../api/cstoneApi";
 interface Auth {
   user: User | null;
   signIn: (credentials: Credentials) => void;
+  signOut: () => void;
 }
 
 export const AuthContext = createContext({} as Auth);
@@ -36,9 +37,14 @@ export default function AuthProvider({ children }: { children: ReactChild }) {
       .catch((err) => console.error(err.response.data));
   };
 
+  const signOut = async () => {
+    await AsyncStorage.removeItem("token");
+    setUser(null);
+  };
+
   if (!loaded) {
     return null;
   }
 
-  return <AuthContext.Provider value={{ user, signIn }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, signIn, signOut }}>{children}</AuthContext.Provider>;
 }

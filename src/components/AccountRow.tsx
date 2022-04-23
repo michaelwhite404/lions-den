@@ -1,20 +1,23 @@
 import React, { ReactNode } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedbackProps,
+  View,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 
-export default function AccountRow({
-  icon,
-  text,
-  arrow,
-  color,
-}: {
+interface AccountRowProps extends Pick<TouchableWithoutFeedbackProps, "onPress"> {
   text?: string;
   arrow?: boolean;
   icon?: ReactNode;
   color?: string;
-}) {
+}
+
+export default function AccountRow({ icon, text, arrow, color, onPress }: AccountRowProps) {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View style={styles.row}>
         <View style={styles.rowLeft}>
           {icon}
