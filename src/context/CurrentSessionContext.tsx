@@ -27,7 +27,6 @@ export function CurrentSessionProvider({ children }: { children: ReactChild }) {
       setSession(sessionToday.session);
       setAttendance(sessionToday.attendance);
       setLoaded(!loaded);
-      console.log("DONE");
     });
   }, []);
 

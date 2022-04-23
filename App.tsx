@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -9,10 +9,10 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import AddDropInsScreen from "./src/screens/AddDropInsScreen";
 import { CurrentSessionProvider } from "./src/context/CurrentSessionContext";
 import SignatureScreen from "./src/screens/SignatureScreen";
-import { useLayoutEffect } from "react";
 import SignInScreen from "./src/screens/SignInScreen";
 import AuthProvider from "./src/context/AuthContext";
 import useAuth from "./src/hooks/useAuth";
+import useCurrentSession from "./src/hooks/useCurrentSession";
 
 interface RootStackParams {
   MainStack: undefined;
@@ -55,11 +55,22 @@ function App() {
           name="Home"
           component={HomeScreen}
           options={{
-            headerRight: () => (
-              <TouchableOpacity onPress={() => {}}>
-                <Ionicons name="ios-add" size={30} color={"#0a84ff"} style={{ marginRight: 10 }} />
-              </TouchableOpacity>
-            ),
+            headerRight: () => {
+              const { session } = useCurrentSession();
+
+              if (!session) return undefined;
+
+              return (
+                <TouchableOpacity onPress={() => {}}>
+                  <Ionicons
+                    name="ios-add"
+                    size={30}
+                    color={"#0a84ff"}
+                    style={{ marginRight: 10 }}
+                  />
+                </TouchableOpacity>
+              );
+            },
           }}
         />
         <MainStack.Screen
@@ -86,7 +97,6 @@ function App() {
         screenOptions={() => ({
           tabBarActiveTintColor: "dodgerblue",
           tabBarInactiveTintColor: "gray",
-          // tabBarStyle: { display: visibility(route) },
         })}
       >
         <RootStack.Screen
