@@ -12,6 +12,7 @@ import SignatureScreen from "./src/screens/SignatureScreen";
 import { useLayoutEffect } from "react";
 import SignInScreen from "./src/screens/SignInScreen";
 import AuthProvider from "./src/context/AuthContext";
+import useAuth from "./src/hooks/useAuth";
 
 interface RootStackParams {
   MainStack: undefined;
@@ -32,6 +33,8 @@ export type AuthStackParams = {
 };
 
 function App() {
+  const { user } = useAuth();
+
   const AuthStack = createNativeStackNavigator<AuthStackParams>();
   const RootStack = createBottomTabNavigator<RootStackParams>();
   const MainStack = createNativeStackNavigator<MainStackParams>();
@@ -131,8 +134,7 @@ function App() {
   return (
     <NavigationContainer>
       <StatusBar style="auto" />
-      {/* <RootScreenStack /> */}
-      <AuthScreenStack />
+      {user ? <RootScreenStack /> : <AuthScreenStack />}
     </NavigationContainer>
   );
 }

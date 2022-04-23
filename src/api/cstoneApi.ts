@@ -7,6 +7,7 @@ import {
   SessionTodayResponse,
   SessionsResponse,
   SignInResponse,
+  GetMeResponse,
 } from "../../types/apiResponse";
 import StudentModel from "../../types/models/studentModel";
 import Credentials from "../../types/credentials";
@@ -81,6 +82,12 @@ export const getAllAftercareSessions = async () => {
 export const signIn = async (credentials: Credentials) => {
   const res = await cstoneApi.post<SignInResponse>("/users/login", credentials);
   return { token: res.data.token, user: res.data.data.employee };
+};
+
+export const getMe = async () => {
+  const token = await getToken();
+  const res = await cstoneApi.get<GetMeResponse>("/users/me", headers(token));
+  return res.data.data.user;
 };
 
 const getToken = async () => await AsyncStorage.getItem("token");

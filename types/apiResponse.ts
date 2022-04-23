@@ -28,3 +28,5 @@ export interface SessionsResponse extends APIResponse<{ sessions: AftercareSessi
 export interface SignInResponse extends Omit<APIResponse<{ employee: User }>, "requestedAt"> {
   token: string;
 }
+
+export interface GetMeResponse extends APIResponse<{ user: User }> {}
