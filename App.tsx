@@ -10,6 +10,7 @@ import AddDropInsScreen from "./src/screens/AddDropInsScreen";
 import { CurrentSessionProvider } from "./src/context/CurrentSessionContext";
 import SignatureScreen from "./src/screens/SignatureScreen";
 import { useLayoutEffect } from "react";
+import SignInScreen from "./src/screens/SignInScreen";
 
 interface RootStackParams {
   MainStack: undefined;
@@ -25,7 +26,12 @@ export type MainStackParams = {
   Signature: undefined;
 };
 
+export type AuthStackParams = {
+  SignIn: undefined;
+};
+
 function App() {
+  const AuthStack = createNativeStackNavigator<AuthStackParams>();
   const RootStack = createBottomTabNavigator<RootStackParams>();
   const MainStack = createNativeStackNavigator<MainStackParams>();
 
@@ -69,9 +75,8 @@ function App() {
     );
   };
 
-  return (
-    <NavigationContainer>
-      <StatusBar style="auto" />
+  const RootScreenStack = () => {
+    return (
       <RootStack.Navigator
         initialRouteName="Main"
         screenOptions={() => ({
@@ -111,6 +116,22 @@ function App() {
           }}
         />
       </RootStack.Navigator>
+    );
+  };
+
+  const AuthScreenStack = () => {
+    return (
+      <AuthStack.Navigator initialRouteName="SignIn">
+        <AuthStack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
+      </AuthStack.Navigator>
+    );
+  };
+
+  return (
+    <NavigationContainer>
+      <StatusBar style="auto" />
+      {/* <RootScreenStack /> */}
+      <AuthScreenStack />
     </NavigationContainer>
   );
 }
