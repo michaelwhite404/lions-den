@@ -2,11 +2,11 @@ import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-rn";
 import SessionScreenProps from "../../../types/sessionScreenProps";
-import Refresh from "../../components/Refresh";
+import RefreshScrollView from "../../components/RefreshScrollView";
 
 export default function InactiveSessionScreen({ navigation, currentSession }: SessionScreenProps) {
   return (
-    <Refresh onRefresh={currentSession.refreshSession}>
+    <RefreshScrollView onRefresh={currentSession.refreshSession}>
       <View style={styles.container}>
         <Image style={styles.image} source={require("../../../assets/SleepingStudent.png")} />
         <Text style={styles.text}>There is no active session</Text>
@@ -18,7 +18,7 @@ export default function InactiveSessionScreen({ navigation, currentSession }: Se
           </TouchableOpacity>
         </View>
       </View>
-    </Refresh>
+    </RefreshScrollView>
   );
 }
 

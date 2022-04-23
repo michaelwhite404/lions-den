@@ -4,14 +4,14 @@ import moment from "moment";
 import { Ionicons } from "@expo/vector-icons";
 import { getSignatureURL } from "../../api/cstoneApi";
 import SessionScreenProps from "../../../types/sessionScreenProps";
-import Refresh from "../../components/Refresh";
+import RefreshScrollView from "../../components/RefreshScrollView";
 
 export default function ActiveSessionScreen({ navigation, currentSession }: SessionScreenProps) {
   const awaitingPickUp = currentSession.attendance.filter((entry) => !entry.signOutDate);
   const pickedUp = currentSession.attendance.filter((entry) => entry.signOutDate);
 
   return (
-    <Refresh onRefresh={currentSession.refreshSession}>
+    <RefreshScrollView onRefresh={currentSession.refreshSession}>
       {awaitingPickUp.length > 0 && (
         <View>
           <Text style={styles.head}>Awaiting Pickup ({awaitingPickUp.length})</Text>
@@ -46,7 +46,7 @@ export default function ActiveSessionScreen({ navigation, currentSession }: Sess
           ))}
         </View>
       )}
-    </Refresh>
+    </RefreshScrollView>
   );
 }
 

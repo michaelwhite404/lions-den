@@ -5,12 +5,12 @@ const wait = (timeout: number) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-interface RefreshProps {
+interface RefreshScrollViewProps {
   children: ReactNode;
   onRefresh?: () => void;
 }
 
-export default function Refresh({ children, onRefresh }: RefreshProps) {
+export default function RefreshScrollView({ children, onRefresh }: RefreshScrollViewProps) {
   const [refreshing, setRefreshing] = useState(false);
 
   const refresh = useCallback(() => {
