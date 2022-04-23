@@ -1,8 +1,14 @@
-import React from "react";
-import { Image, TextInput, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import LabeledInput from "../components/LabeledInput";
 
 export default function SignInScreen() {
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
+
+  const changeText = (name: string, text: string) =>
+    setCredentials({ ...credentials, [name]: text });
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.innerContainer}>
@@ -12,11 +18,19 @@ export default function SignInScreen() {
           resizeMode="contain"
         />
         <Text>Sign In to Lions Den</Text>
-        <Text>Email Address</Text>
-        <View style={styles.input}>
-          <TextInput />
-        </View>
-        {/* <Text>Password</Text> */}
+        <LabeledInput
+          name="email"
+          label="Email Address"
+          value={credentials.email}
+          onChangeText={changeText}
+        />
+        <View style={{ marginTop: 30 }} />
+        <LabeledInput
+          name="password"
+          label="Password"
+          value={credentials.password}
+          onChangeText={changeText}
+        />
       </View>
     </SafeAreaView>
   );
@@ -37,20 +51,7 @@ const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
+    alignSelf: "center",
     // backgroundColor: "yellow",
-  },
-  input: {
-    borderRadius: 6,
-    height: 25,
-    shadowColor: "#757575",
-    shadowRadius: 8,
-    shadowOpacity: 0.3,
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    // borderColor: "red",
-    // borderWidth: 1,
-    backgroundColor: "white",
   },
 });
