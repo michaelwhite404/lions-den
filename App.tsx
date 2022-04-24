@@ -13,6 +13,7 @@ import SignInScreen from "./src/screens/SignInScreen";
 import AuthProvider from "./src/context/AuthContext";
 import useAuth from "./src/hooks/useAuth";
 import useCurrentSession from "./src/hooks/useCurrentSession";
+import Toast from "react-native-toast-message";
 
 interface RootStackParams {
   MainStack: undefined;
@@ -145,6 +146,7 @@ function App() {
     <NavigationContainer>
       <StatusBar style="auto" />
       {user ? <RootScreenStack /> : <AuthScreenStack />}
+      <Toast />
     </NavigationContainer>
   );
 }

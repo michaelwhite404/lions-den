@@ -3,11 +3,15 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import useAuth from "../hooks/useAuth";
 import AccountRow from "../components/AccountRow";
+import showToast from "../utils/showToast";
 
 export default function AccountScreen() {
   const { user, signOut } = useAuth();
 
-  const signOutUser = () => setTimeout(() => signOut(), 500);
+  const signOutUser = () => {
+    showToast("success", "Log out successful");
+    setTimeout(() => signOut(), 750);
+  };
 
   return (
     <View style={styles.container}>

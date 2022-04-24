@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import LabeledInput from "../components/LabeledInput";
 import Credentials from "../../types/credentials";
 import useAuth from "../hooks/useAuth";
+import showToast from "../utils/showToast";
 
 export default function SignInScreen({ navigation }: any) {
   const [credentials, setCredentials] = useState<Credentials>({ email: "", password: "" });
@@ -13,7 +14,14 @@ export default function SignInScreen({ navigation }: any) {
   const changeText = (name: string, text: string) =>
     setCredentials({ ...credentials, [name]: text });
 
-  const signInUser = () => signIn(credentials);
+  const signInUser = async () => {
+    try {
+      const { user } = await signIn(credentials);
+      showToast("success", "Log in successful", `👋 Welcome back, ${user.firstName}`);
+    } catch (err) {
+      showToast("error", err.response.data.message);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
