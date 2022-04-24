@@ -3,7 +3,6 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../components/Button";
 import LabeledInput from "../components/LabeledInput";
-import * as cstoneApi from "../api/cstoneApi";
 import Credentials from "../../types/credentials";
 import useAuth from "../hooks/useAuth";
 
@@ -52,7 +51,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 75,
     alignItems: "center",
-    borderWidth: 5,
   },
   text: {
     fontWeight: "700",

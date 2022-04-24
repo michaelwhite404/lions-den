@@ -30,3 +30,5 @@ export interface SignInResponse extends Omit<APIResponse<{ employee: User }>, "r
 }
 
 export interface GetMeResponse extends APIResponse<{ user: User }> {}
+
+export interface EntriesResponse extends APIResponse<{ entries: AftercareAttendanceEntry[] }> {}

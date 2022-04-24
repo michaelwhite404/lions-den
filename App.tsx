@@ -61,7 +61,7 @@ function App() {
               if (!session) return undefined;
 
               return (
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={() => navigation.navigate("SelectStudents")}>
                   <Ionicons
                     name="ios-add"
                     size={30}

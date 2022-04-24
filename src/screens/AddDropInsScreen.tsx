@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, View, Dimensions, TouchableOpacity } from "
 import SearchBar from "react-native-dynamic-search-bar";
 import tw from "tailwind-rn";
 import StudentModel from "../../types/models/studentModel";
-import { getAllStudents, startAftercareSession } from "../api/cstoneApi";
+import { getAllStudents, startAftercareSession, addEntriesToSession } from "../api/cstoneApi";
 import CheckItem from "../components/CheckItem";
 import ListItem from "../components/ListItem";
 import useCurrentSession from "../hooks/useCurrentSession";
@@ -13,10 +13,17 @@ export default function AddDropInsScreen({ navigation, route }: any) {
   const [students, setStudents] = useState<StudentModel[]>([]);
   const { data, filter, setFilter } = useFilter(students, "fullName");
   const [selectedStudents, setSelectedStudents] = useState<StudentModel[]>([]);
-  const { setSession, setAttendance } = useCurrentSession();
+  const { attendance, session, setSession, setAttendance, refreshSession } = useCurrentSession();
 
   useEffect(() => {
-    getAllStudents({ status: "Active", aftercare: false }).then(setStudents).catch(console.error);
+    getAllStudents({ status: "Active", aftercare: false })
+      .then((fetchedStudents) => {
+        if (attendance.length === 0) return setStudents(fetchedStudents);
+        const dropInIds = attendance.filter((entry) => entry.dropIn).map((e) => e.student._id);
+        const stu = fetchedStudents.filter((s) => !dropInIds.includes(s._id));
+        setStudents(stu);
+      })
+      .catch(console.error);
   }, []);
 
   const addStudent = (studentToAdd: StudentModel) => {
@@ -40,6 +47,24 @@ export default function AddDropInsScreen({ navigation, route }: any) {
         navigation.navigate("Home");
       })
       .catch(console.error);
+  };
+
+  const addStudentsToSession = async () => {
+    const dropInsIds = selectedStudents.map((student) => student._id);
+    const allIds = [...(route.params.selectedIds as string[]), ...dropInsIds];
+    addEntriesToSession({ students: allIds })
+      .then(() => {
+        refreshSession();
+        navigation.navigate("Home");
+      })
+      .catch((err) => {
+        console.error(err.response.data);
+      });
+  };
+
+  const btn = {
+    text: session ? "Add Students to Session" : "Begin Session",
+    onPress: session ? addStudentsToSession : startSession,
   };
 
   return (
@@ -79,9 +104,9 @@ export default function AddDropInsScreen({ navigation, route }: any) {
         />
       </View>
       <View style={styles.submit}>
-        <TouchableOpacity onPress={startSession}>
+        <TouchableOpacity onPress={btn.onPress}>
           <View style={tw("bg-blue-600 w-64 py-3 items-center rounded-md")}>
-            <Text style={tw("text-white font-medium")}>Begin Session</Text>
+            <Text style={tw("text-white font-medium")}>{btn.text}</Text>
           </View>
         </TouchableOpacity>
       </View>

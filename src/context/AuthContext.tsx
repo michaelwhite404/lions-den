@@ -24,7 +24,7 @@ export default function AuthProvider({ children }: { children: ReactChild }) {
     cstoneApi
       .getMe()
       .then((user) => setUser(user))
-      .catch()
+      .catch(() => {})
       .finally(() => setLoaded(true));
 
   const signIn = (credentials: Credentials) => {

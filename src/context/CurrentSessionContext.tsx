@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState, ReactChild, useCallback } from "react";
 import { AftercareAttendanceEntry, AftercareSession } from "../../types/models/aftercareTypes";
 import { getSessionToday } from "../api/cstoneApi";
+import useAuth from "../hooks/useAuth";
 
 export interface CurrentSession {
   session: AftercareSession | null;
@@ -17,10 +18,11 @@ export function CurrentSessionProvider({ children }: { children: ReactChild }) {
   const [session, setSession] = useState<AftercareSession | null>(null);
   const [attendance, setAttendance] = useState<AftercareAttendanceEntry[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
-    refreshSession();
-  }, []);
+    user && refreshSession();
+  }, [user]);
 
   const refreshSession = useCallback(() => {
     getSessionToday().then((sessionToday) => {

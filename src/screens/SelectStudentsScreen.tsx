@@ -4,14 +4,21 @@ import tw from "tailwind-rn";
 import StudentModel from "../../types/models/studentModel";
 import { getAftercareStudents } from "../api/cstoneApi";
 import MultiSelectList from "../components/MultiSelectList";
+import useCurrentSession from "../hooks/useCurrentSession";
 
 export default function SelectStudentsScreen({ navigation }: any) {
   const [students, setStudents] = useState<StudentModel[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const { attendance } = useCurrentSession();
 
   useEffect(() => {
     getAftercareStudents()
-      .then(setStudents)
+      .then((fetchedStudents) => {
+        if (attendance.length === 0) return setStudents(fetchedStudents);
+        const attendanceIds = attendance.map((s) => s.student._id);
+        const stu = fetchedStudents.filter((s) => !attendanceIds.includes(s._id));
+        setStudents(stu);
+      })
       .catch((err) => console.error(err));
   }, []);
 
