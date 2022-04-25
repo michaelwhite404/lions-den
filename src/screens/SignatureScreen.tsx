@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import Signature from "react-native-signature-canvas";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { AftercareAttendanceEntry } from "../../types/models/aftercareTypes";
@@ -40,7 +40,7 @@ export default function SignatureScreen({ route, navigation }: any) {
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     changeLandscape();
 
     return () => {
@@ -53,7 +53,13 @@ export default function SignatureScreen({ route, navigation }: any) {
       descriptionText={`Sign out ${entry?.student.fullName || ""}`}
       confirmText="Sign Out"
       onOK={onSubmit}
-      // webStyle={`body,html {height: 100px; width: "100%;}`}
+      webStyle={`
+        html {height: 100%}
+        body {height: calc(100% - 75px)}
+        .m-signature-pad {margin-left: 0; margin-top: 0}
+        .m-signature-pad--body { height: 100%; }
+        .m-signature-pad--footer {}
+      `}
     />
   );
 }
