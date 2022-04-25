@@ -6,6 +6,7 @@ import LabeledInput from "../components/LabeledInput";
 import Credentials from "../../types/credentials";
 import useAuth from "../hooks/useAuth";
 import showToast from "../utils/showToast";
+import { Err } from "../../types/apiResponse";
 
 export default function SignInScreen({ navigation }: any) {
   const [credentials, setCredentials] = useState<Credentials>({ email: "", password: "" });
@@ -15,12 +16,11 @@ export default function SignInScreen({ navigation }: any) {
     setCredentials({ ...credentials, [name]: text });
 
   const signInUser = async () => {
-    try {
-      const { user } = await signIn(credentials);
-      showToast("success", "Log in successful", `👋 Welcome back, ${user.firstName}`);
-    } catch (err) {
-      showToast("error", err.response.data.message);
-    }
+    signIn(credentials)
+      .then(({ user }) =>
+        showToast("success", "Log in successful", `👋 Welcome back, ${user.firstName}`)
+      )
+      .catch((err: Err) => showToast("error", err.response!.data.message));
   };
 
   return (

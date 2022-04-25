@@ -9,7 +9,7 @@ export default function AccountScreen() {
   const { user, signOut } = useAuth();
 
   const signOutUser = () => {
-    showToast("success", "Log out successful");
+    showToast("success", "Log out successful!");
     setTimeout(() => signOut(), 750);
   };
 

@@ -4,6 +4,7 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { AftercareAttendanceEntry } from "../../types/models/aftercareTypes";
 import { signOutStudent } from "../api/cstoneApi";
 import useCurrentSession from "../hooks/useCurrentSession";
+import showToast from "../utils/showToast";
 
 export default function SignatureScreen({ route, navigation }: any) {
   const { attendance, setAttendance } = useCurrentSession();
@@ -29,11 +30,11 @@ export default function SignatureScreen({ route, navigation }: any) {
           const newAttendance = [...attendance];
           newAttendance[index] = returnedEntry;
           setAttendance(newAttendance);
-          console.log("submitted");
+          showToast("success", `${returnedEntry.student.fullName} sucessfully signed out`);
           navigation.navigate("Home");
         })
         .catch((err) => {
-          console.error(err);
+          showToast("error", "Error signing out");
           setLocked(false);
         });
     }

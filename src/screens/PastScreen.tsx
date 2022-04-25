@@ -6,6 +6,7 @@ import tw from "tailwind-rn";
 import { AftercareSession } from "../../types/models/aftercareTypes";
 import { getAllAftercareSessions } from "../api/cstoneApi";
 import RefreshFlatList from "../components/RefreshFlatList";
+import showToast from "../utils/showToast";
 
 export default function PastScreen() {
   const [sessions, setSessions] = useState<AftercareSession[]>([]);
@@ -14,7 +15,10 @@ export default function PastScreen() {
     getSessions();
   }, []);
 
-  const getSessions = () => getAllAftercareSessions().then(setSessions).catch(console.error);
+  const getSessions = () =>
+    getAllAftercareSessions()
+      .then(setSessions)
+      .catch(() => showToast("error", "Could not fetch session", "Pull down to try again"));
 
   return (
     <RefreshFlatList

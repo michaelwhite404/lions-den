@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { FlatList, StyleSheet, Text, View, Dimensions, TouchableOpacity } from "react-native";
 import SearchBar from "react-native-dynamic-search-bar";
 import tw from "tailwind-rn";
+import pluralize from "pluralize";
 import StudentModel from "../../types/models/studentModel";
 import { getAllStudents, startAftercareSession, addEntriesToSession } from "../api/cstoneApi";
 import CheckItem from "../components/CheckItem";
 import ListItem from "../components/ListItem";
 import useCurrentSession from "../hooks/useCurrentSession";
 import useFilter from "../hooks/useFilter";
+import showToast from "../utils/showToast";
+import { Err } from "../../types/apiResponse";
 
 export default function AddDropInsScreen({ navigation, route }: any) {
   const [students, setStudents] = useState<StudentModel[]>([]);
@@ -23,7 +26,7 @@ export default function AddDropInsScreen({ navigation, route }: any) {
         const stu = fetchedStudents.filter((s) => !dropInIds.includes(s._id));
         setStudents(stu);
       })
-      .catch(console.error);
+      .catch(() => showToast("error", "Could not fetch students", "Please try again"));
   }, []);
 
   const addStudent = (studentToAdd: StudentModel) => {
@@ -44,22 +47,26 @@ export default function AddDropInsScreen({ navigation, route }: any) {
       .then((response) => {
         setSession(response.session);
         setAttendance(response.attendance);
+        showToast(
+          "success",
+          "Aftercare Session Started",
+          `${pluralize("students", response.attendance.length, true)} added`
+        );
         navigation.navigate("Home");
       })
-      .catch(console.error);
+      .catch((err: Err) => showToast("error", err.response!.data.message));
   };
 
   const addStudentsToSession = async () => {
     const dropInsIds = selectedStudents.map((student) => student._id);
     const allIds = [...(route.params.selectedIds as string[]), ...dropInsIds];
     addEntriesToSession({ students: allIds })
-      .then(() => {
+      .then((entries) => {
         refreshSession();
+        showToast("success", `${pluralize("students", entries.length, true)} added`);
         navigation.navigate("Home");
       })
-      .catch((err) => {
-        console.error(err.response.data);
-      });
+      .catch((err: Err) => showToast("error", err.response!.data.message));
   };
 
   const btn = {

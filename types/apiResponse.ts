@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { AftercareAttendanceEntry, AftercareSession } from "./models/aftercareTypes";
 import StudentModel from "./models/studentModel";
 import { User } from "./models/userModel";
@@ -32,3 +33,10 @@ export interface SignInResponse extends Omit<APIResponse<{ employee: User }>, "r
 export interface GetMeResponse extends APIResponse<{ user: User }> {}
 
 export interface EntriesResponse extends APIResponse<{ entries: AftercareAttendanceEntry[] }> {}
+
+interface APIError {
+  status: "fail" | "error";
+  message: string;
+}
+
+export type Err = AxiosError<APIError>;

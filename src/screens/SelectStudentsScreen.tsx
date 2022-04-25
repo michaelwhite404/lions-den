@@ -1,10 +1,13 @@
+import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-rn";
+import { Err } from "../../types/apiResponse";
 import StudentModel from "../../types/models/studentModel";
 import { getAftercareStudents } from "../api/cstoneApi";
 import MultiSelectList from "../components/MultiSelectList";
 import useCurrentSession from "../hooks/useCurrentSession";
+import showToast from "../utils/showToast";
 
 export default function SelectStudentsScreen({ navigation }: any) {
   const [students, setStudents] = useState<StudentModel[]>([]);
@@ -19,7 +22,10 @@ export default function SelectStudentsScreen({ navigation }: any) {
         const stu = fetchedStudents.filter((s) => !attendanceIds.includes(s._id));
         setStudents(stu);
       })
-      .catch((err) => console.error(err));
+      .catch(() => {
+        showToast("error", "Could not fetch students", "Please try again");
+        navigation.goBack();
+      });
   }, []);
 
   const handleAnyCheckboxPress = (selectedItems: StudentModel[]) =>
