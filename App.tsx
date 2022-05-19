@@ -1,9 +1,10 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer, getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { io } from "socket.io-client";
 import { AccountScreen, HomeScreen, PastScreen, SelectStudentsScreen } from "./src/screens";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import AddDropInsScreen from "./src/screens/AddDropInsScreen";
@@ -14,6 +15,8 @@ import AuthProvider from "./src/context/AuthContext";
 import useAuth from "./src/hooks/useAuth";
 import useCurrentSession from "./src/hooks/useCurrentSession";
 import Toast from "react-native-toast-message";
+import useSocket from "./src/hooks/useSocket";
+import SocketProvider from "./src/context/SocketContext";
 
 interface RootStackParams {
   MainStack: undefined;
@@ -35,6 +38,7 @@ export type AuthStackParams = {
 
 function App() {
   const { user } = useAuth();
+  const socket = useSocket();
 
   const AuthStack = createNativeStackNavigator<AuthStackParams>();
   const RootStack = createBottomTabNavigator<RootStackParams>();
@@ -144,7 +148,7 @@ function App() {
 
   return (
     <NavigationContainer>
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
       {user ? <RootScreenStack /> : <AuthScreenStack />}
       <Toast />
     </NavigationContainer>
@@ -163,9 +167,11 @@ const styles = StyleSheet.create({
 export default () => {
   return (
     <AuthProvider>
-      <CurrentSessionProvider>
-        <App />
-      </CurrentSessionProvider>
+      <SocketProvider>
+        <CurrentSessionProvider>
+          <App />
+        </CurrentSessionProvider>
+      </SocketProvider>
     </AuthProvider>
   );
 };

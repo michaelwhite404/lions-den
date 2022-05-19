@@ -32,6 +32,7 @@
     "react-native-toast-message": "^2.1.5",
     "react-native-web": "0.17.1",
     "react-table": "^7.7.0",
+    "socket.io-client": "^4.5.1",
     "tailwind-rn": "^3.0.1"
   },
   "devDependencies": {

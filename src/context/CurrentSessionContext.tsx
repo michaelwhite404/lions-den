@@ -1,7 +1,9 @@
 import React, { createContext, useEffect, useState, ReactChild, useCallback } from "react";
+import { Socket } from "socket.io-client";
 import { AftercareAttendanceEntry, AftercareSession } from "../../types/models/aftercareTypes";
 import { getSessionToday } from "../api/cstoneApi";
 import useAuth from "../hooks/useAuth";
+import useSocket from "../hooks/useSocket";
 
 export interface CurrentSession {
   session: AftercareSession | null;
@@ -12,6 +14,8 @@ export interface CurrentSession {
   refreshSession: () => void;
 }
 
+type CurrentSessionData = Pick<CurrentSession, "session" | "attendance">;
+
 export const CurrentSessionContext = createContext({} as CurrentSession);
 
 export function CurrentSessionProvider({ children }: { children: ReactChild }) {
@@ -19,10 +23,18 @@ export function CurrentSessionProvider({ children }: { children: ReactChild }) {
   const [attendance, setAttendance] = useState<AftercareAttendanceEntry[]>([]);
   const [loaded, setLoaded] = useState(false);
   const { user } = useAuth();
+  const socket = useSocket();
 
   useEffect(() => {
     user && refreshSession();
   }, [user]);
+
+  useEffect(() => {
+    socket?.on("aftercareSessionStart", (data: CurrentSessionData) => {
+      setSession(data.session);
+      setAttendance(data.attendance);
+    });
+  }, [socket]);
 
   const refreshSession = useCallback(() => {
     getSessionToday().then((sessionToday) => {
