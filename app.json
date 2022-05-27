@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "lions-den",
+    "name": "Lions Den",
     "slug": "lions-den",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,10 +15,14 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "bundleIdentifier": "org.cornerstone-schools.lions-den",
+      "buildNumber": "1.0.0",
       "supportsTablet": true,
       "requireFullScreen": true
     },
     "android": {
+      "package": "org.cornerstone-schools.lions-den",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
