@@ -2,6 +2,7 @@
   "expo": {
     "name": "Lions Den",
     "slug": "lions-den",
+    "owner": "cornerstone-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,13 +16,13 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "bundleIdentifier": "org.cornerstone-schools.lions-den",
+      "bundleIdentifier": "org.cornerstoneSchools.lionsDen",
       "buildNumber": "1.0.0",
       "supportsTablet": true,
       "requireFullScreen": true
     },
     "android": {
-      "package": "org.cornerstone-schools.lions-den",
+      "package": "org.cornerstoneSchools.lionsDen",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
