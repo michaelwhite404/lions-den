@@ -67,12 +67,7 @@ function App() {
 
               return (
                 <TouchableOpacity onPress={() => navigation.navigate("SelectStudents")}>
-                  <Ionicons
-                    name="ios-add"
-                    size={30}
-                    color={"#0a84ff"}
-                    style={{ marginRight: 10 }}
-                  />
+                  <Ionicons name="add" size={30} color={"#0a84ff"} style={{ marginRight: 10 }} />
                 </TouchableOpacity>
               );
             },
@@ -120,7 +115,7 @@ function App() {
             headerTitle: "Past Sessions",
             tabBarLabel: "Past Sessions",
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="ios-play-skip-back-outline" size={size} color={color} />
+              <Ionicons name="play-skip-back-outline" size={size} color={color} />
             ),
           }}
         />
@@ -130,7 +125,7 @@ function App() {
           options={{
             headerTitle: "Account",
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="ios-person-outline" size={size} color={color} />
+              <Ionicons name="person-outline" size={size} color={color} />
             ),
           }}
         />
